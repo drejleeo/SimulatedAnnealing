@@ -12,12 +12,13 @@ class City(object):
 
 class Distances(object):
     def __init__(self, cities, total, custom_alg):
+        self.nr_of_cities = total
         self.all = {}
-        for index1 in range(1, total + 1):
-            for index2 in range(index1 + 1, total + 1):
+        for index1 in range(total):
+            for index2 in range(index1 + 1, total):
                 identifier = (index1, index2)
-                point1 = (cities[index1].x_coord, cities[index1].y_coord)
-                point2 = (cities[index2].x_coord, cities[index2].y_coord)
+                point1 = (cities[index1 + 1].x_coord, cities[index1 + 1].y_coord)
+                point2 = (cities[index2 + 1].x_coord, cities[index2 + 1].y_coord)
 
                 self.all.update({
                     identifier: ALGORITHMS[custom_alg](point1, point2)

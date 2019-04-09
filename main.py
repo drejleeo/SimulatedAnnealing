@@ -1,5 +1,9 @@
+import numpy
+
+from simulated_annealing import anneal
 from models import Distances
 from utils import process_data
+from cost_algorithms import ALGORITHMS
 import sys, os
 
 base_path = os.getcwd()
@@ -16,7 +20,13 @@ if __name__ == '__main__':
         custom_alg=headers['EDGE_WEIGHT_TYPE'],
     )
 
-    for item in distances.all.items():
-        print(item)
+    solution = anneal(
+        T=1.0,
+        min_T=0.00001,
+        alpha=0.9,
+        iterations=100,
+        cost_alg=ALGORITHMS[headers['EDGE_WEIGHT_TYPE']],
+        dimension=headers['DIMENSION'],
+    )
 
-    print(distances.get_between_cities(54, 3))
+    print(solution)
