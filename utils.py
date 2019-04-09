@@ -36,9 +36,6 @@ def plot_solution(cities, solution, fig):
     plot_x_coords = []
     plot_y_coords = []
 
-    # global points
-    # global fig
-
     for index in range(len(solution)):
         current_node = cities[solution[index]]
 
@@ -48,10 +45,6 @@ def plot_solution(cities, solution, fig):
     plot_x_coords.append(cities[solution[0]].x_coord)
     plot_y_coords.append(cities[solution[0]].y_coord)
 
-    #ideea e ca plot_y_coords si plot_y_coords sa fie o lista de coordonate de forma [2,31,4,31,] si [3,3,21,2]
-    #plt.plot(x,y) pune coordonatele pe harta
-
-    #update plot
     plt.clf()
     plt.plot(plot_x_coords,plot_y_coords)
     fig.canvas.draw()

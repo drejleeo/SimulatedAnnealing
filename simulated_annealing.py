@@ -7,7 +7,7 @@ import random
 import numpy
 
 
-def anneal(T, min_T, alpha, iterations, distances, cities, dimension, plot=True):
+def anneal(T, min_T, alpha, iterations, distances, cities, dimension, plot=False):
 
     sol = random.sample(range(1, dimension + 1), dimension)
     old_cost = total_cost(sol, distances)
@@ -16,6 +16,7 @@ def anneal(T, min_T, alpha, iterations, distances, cities, dimension, plot=True)
     best_cost = old_cost
     if plot is True:
         fig = plt.figure()
+        fig.show()
         plot_solution(cities, sol, fig)
 
     while T > min_T:
@@ -31,26 +32,21 @@ def anneal(T, min_T, alpha, iterations, distances, cities, dimension, plot=True)
 
             delta = delta_costs(new_cost, old_cost)
             ap = acceptance_probability(delta, T)
-            print("Old_cost {} new_cost {} Temp: {} ap {}".format(
-                old_cost, new_cost, T, ap
-            ))
+            print("Old_cost {} new_cost {} Temp: {} ap {}".format(old_cost, new_cost, T, ap))
 
-            if delta < 0:
+            if delta < 0 or ap > random.random():
                 sol = new_sol
                 old_cost = new_cost
-                # if plot is True:
-                    # plot_solution(cities, sol, fig)
-            elif ap > random.random():
-                # print('')
-                sol = new_sol
-                old_cost = new_cost
+                if plot is True:
+                    plot_solution(cities, sol, fig)
+                    plt.pause(0.01)
 
             i += 1
         T = T * alpha
 
     if plot is True:
         plt.draw()
-        time.sleep(10)
+        time.sleep(5)
     print('Best distance: ', total_cost(best, distances))
     return sol, total_cost(sol, distances)
 
