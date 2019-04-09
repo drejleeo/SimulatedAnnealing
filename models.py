@@ -21,7 +21,7 @@ class Distances(object):
                 point2 = (cities[index2].x_coord, cities[index2].y_coord)
 
                 self.all.update({
-                    identifier: round(ALGORITHMS[custom_alg](point1, point2))
+                    identifier: ALGORITHMS[custom_alg](point1, point2)
                 })
 
     def get_between_cities(self, index1, index2):

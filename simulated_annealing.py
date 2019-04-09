@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from matplotlib import pyplot as plt
 from utils import plot_solution
 import time
@@ -8,8 +10,10 @@ import numpy
 def anneal(T, min_T, alpha, iterations, distances, cities, dimension, plot=True):
 
     sol = random.sample(range(1, dimension + 1), dimension)
-    best = sol
     old_cost = total_cost(sol, distances)
+
+    best = sol
+    best_cost = old_cost
     if plot is True:
         fig = plt.figure()
         plot_solution(cities, sol, fig)
@@ -18,19 +22,29 @@ def anneal(T, min_T, alpha, iterations, distances, cities, dimension, plot=True)
 
         i = 1
         while i <= iterations:
-            new_sol = get_neighbour(sol)
+            new_sol_copy = deepcopy(sol)
+            new_sol = get_neighbour(new_sol_copy)
             new_cost = total_cost(new_sol, distances)
-            if new_cost < old_cost:
-                best = new_sol
+            if new_cost < best_cost:
+                best = deepcopy(new_sol)
+                best_cost = new_cost
 
             delta = delta_costs(new_cost, old_cost)
             ap = acceptance_probability(delta, T)
+            print("Old_cost {} new_cost {} Temp: {} ap {}".format(
+                old_cost, new_cost, T, ap
+            ))
 
-            if ap > random.random() or delta < 0:
+            if delta < 0:
                 sol = new_sol
                 old_cost = new_cost
-                if plot is True:
-                    plot_solution(cities, sol, fig)
+                # if plot is True:
+                    # plot_solution(cities, sol, fig)
+            elif ap > random.random():
+                # print('')
+                sol = new_sol
+                old_cost = new_cost
+
             i += 1
         T = T * alpha
 
@@ -58,7 +72,7 @@ def total_cost(solution, distances):
     for index in range(len(solution) - 1):
         cost += distances.get_between_cities(solution[index], solution[index + 1])
     cost += distances.get_between_cities(solution[-1], solution[0])
-    return cost
+    return round(cost, 2)
 
 
 def delta_costs(new_cost, old_cost):
@@ -67,5 +81,5 @@ def delta_costs(new_cost, old_cost):
 
 def acceptance_probability(delta, T):
     e = numpy.exp(1)
-    prob = e**(delta / T)
+    prob = e**(-delta / T)
     return prob

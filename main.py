@@ -20,14 +20,12 @@ if __name__ == '__main__':
     )
 
     solution = anneal(
-        T=1.0,
+        T=1000,
         min_T=0.00001,
-        alpha=0.9,
+        alpha=0.9999,
         iterations=100,
         distances=dists,
         cities=cities,
         dimension=headers['DIMENSION'],
-        plot=True,
+        plot=False,
     )
-
-    print(solution)
