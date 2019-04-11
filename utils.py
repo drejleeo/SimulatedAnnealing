@@ -46,5 +46,5 @@ def plot_solution(cities, solution, fig):
     plot_y_coords.append(cities[solution[0]].y_coord)
 
     plt.clf()
-    plt.plot(plot_x_coords,plot_y_coords)
+    plt.plot(plot_x_coords,plot_y_coords, marker='o')
     fig.canvas.draw()

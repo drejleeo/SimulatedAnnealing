@@ -2,7 +2,7 @@ from simulated_annealing import anneal
 from models import Distances
 from utils import process_data
 import sys, os
-
+import time
 base_path = os.getcwd()
 
 
@@ -19,13 +19,15 @@ if __name__ == '__main__':
         custom_alg=headers['EDGE_WEIGHT_TYPE'],
     )
 
+    start = time.time()
     solution = anneal(
-        T=10,
+        T=10000,
         min_T=0.00001,
         alpha=0.99,
-        iterations=50,
+        iterations=100,
         distances=dists,
         cities=cities,
         dimension=headers['DIMENSION'],
-        plot=True,
+        # plot=True,
     )
+    print(time.time() - start)
